@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Esto es un proyecto  [Next.js](https://nextjs.org) Proyecto iniciado como [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app). Se conecta a una base de datos de Mongo remota y esta realizada por Arianna Sinnato y Lino Benavides. El concepto del proyecto es una aplicación web de noticias. 
 
 ## Getting Started
 
