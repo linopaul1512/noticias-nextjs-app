@@ -5,5 +5,7 @@ import Usuario from "../models/usuario";
 export async function GET() {
   await connectMongoDB();
   const usuarios = await Usuario.find();
+  console.log("usuarios", usuarios)
   return NextResponse.json({ usuarios }, { status: 200 });
+
 }
