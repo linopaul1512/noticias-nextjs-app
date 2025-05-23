@@ -1,17 +1,7 @@
+// src/app/page.js
 "use client";
-import React from "react";
-import Link from "next/link";
-import AllUsuarios from "./components/all-usuarios";
+import { redirect } from "next/navigation";
 
-const Home = () => {
-  return (
-    <div>
-   
-      <div>
-        <AllUsuarios />
-      </div>
-    </div>
-  );
-};
-
-export default Home;
+export default function Home() {
+  redirect("/login");
+}
