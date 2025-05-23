@@ -6,6 +6,7 @@ const noticiaSchema = new Schema(
     Titular: String,
     Descipcion: String,
     Cuerpo: String,
+    Categoría: String
   },
   { timestamps: true }
 );
