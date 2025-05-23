@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+//
 const categoriaSchema = new Schema(
   {
     Nombre: String,
