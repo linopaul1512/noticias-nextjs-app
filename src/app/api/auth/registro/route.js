@@ -30,3 +30,15 @@ export async function POST(request) {
     return NextResponse.json({ message: "Error en el registro", error: error.message }, { status: 500 });
   }
 }
+
+
+
+export async function POST(request) {
+  const { title, description, price } = await request.json();
+  await connectMongoDB();
+  await Products.create({ title, description, price });
+  return NextResponse.json(
+    { message: "Product created successfully" },
+    { status: 200 }
+  );
+}
