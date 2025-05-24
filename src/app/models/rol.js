@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+//
 const rolSchema = new mongoose.Schema(
   {
     Nombre: {
