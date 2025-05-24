@@ -1,13 +1,12 @@
-import mongoose, { Schema } from "mongoose";
-//
-const categoriaSchema = new Schema(
-  {
-    Nombre: String,
-  },
-  { timestamps: true }
-);
+import mongoose from 'mongoose';
 
-const Categoria =
-  mongoose.models.Categoria || mongoose.model("Categoria", categoriaSchema);
+const categoriaSchema = new mongoose.Schema({
+  nombre: {
+    type: String,
+    required: true,
+    },
+}, { timestamps: true });
+
+const Categoria = mongoose.models.Categoria || mongoose.model('Categoria', categoriaSchema);
 
 export default Categoria;

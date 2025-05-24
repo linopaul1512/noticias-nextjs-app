@@ -1,10 +1,19 @@
 import mongoose, { Schema } from "mongoose";
 
-const comentarioSchema = new Schema(
+const comentarioSchema = new mongoose.Schema(
   {
-    IdUser: String,
-    IdNoticia: String,
-    Contenido: String,
+    IdUser: {
+    type: String,
+    required: true,
+    },
+    IdNoticia: {
+    type: String,
+    required: true,
+    },
+    Contenido: {
+    type: String,
+    required: true,
+    }
   },
   { timestamps: true }
 );

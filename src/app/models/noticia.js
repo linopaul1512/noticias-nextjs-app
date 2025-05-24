@@ -1,12 +1,31 @@
 import mongoose, { Schema } from "mongoose";
 
-const noticiaSchema = new Schema(
+const noticiaSchema = new mongoose.Schema(
   {
-    Fecha: Date,
-    Titular: String,
-    Descipcion: String,
-    Cuerpo: String,
-    Categoría: String
+    Fecha: {
+    type: Date,
+    required: true,
+    },
+    Titular: {
+    type: String,
+    required: true,
+    },
+    Descipcion:{
+    type: String,
+    required: true,
+    },
+    Cuerpo: {
+    type: String,
+    required: true,
+    },
+    Categoría: {
+    type: String,
+    required: true,
+    },
+    IdUser: {
+    type: String,
+    required: true,
+    },
   },
   { timestamps: true }
 );

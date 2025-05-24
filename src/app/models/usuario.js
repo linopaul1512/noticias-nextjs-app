@@ -1,14 +1,35 @@
 import mongoose, { Schema } from "mongoose";
 
-const usuarioSchema = new Schema(
+const usuarioSchema = new  mongoose.Schema(
   {
-    Nombre: String,
-    Apellido: String,
-    NombreUsuario: String,
-    Tipo: String,
-    Contrasena: String,
-    Correo: String,
-    Telefono: String,
+    Nombre: {
+    type: String,
+    required: true,
+    },
+    Apellido: {
+    type: String,
+    required: true,
+    },
+    NombreUsuario: {
+    type: String,
+    required: true,
+    },
+    Tipo: {
+    type: String,
+    required: true,
+    },
+    Contrasena: {
+    type: String,
+    required: true,
+    },
+    Correo: {
+    type: String,
+    required: true,
+    },
+    Telefono: {
+    type: String,
+    required: true,
+    }
   },
   { timestamps: true }
 );
