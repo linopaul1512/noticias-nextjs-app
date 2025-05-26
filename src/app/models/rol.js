@@ -2,11 +2,11 @@ import mongoose, { Schema } from "mongoose";
 //
 const rolSchema = new mongoose.Schema(
   {
-    Nombre: {
+    nombre: {
     type: String,
     required: true,
     },
-    Descripcion: {
+    descripcion: {
     type: String,
     required: true,
     },

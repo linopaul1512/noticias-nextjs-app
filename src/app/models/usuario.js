@@ -2,31 +2,31 @@ import mongoose, { Schema } from "mongoose";
 
 const usuarioSchema = new  mongoose.Schema(
   {
-    Nombre: {
+    nombre: {
     type: String,
     required: true,
     },
-    Apellido: {
+    apellido: {
     type: String,
     required: true,
     },
-    NombreUsuario: {
+    nombreusuario: {
     type: String,
     required: true,
     },
-    Tipo: {
+    tipo: {
     type: String,
     required: true,
     },
-    Contrasena: {
+    contrasena: {
     type: String,
     required: true,
     },
-    Correo: {
+    correo: {
     type: String,
     required: true,
     },
-    Telefono: {
+    telefono: {
     type: String,
     required: true,
     }

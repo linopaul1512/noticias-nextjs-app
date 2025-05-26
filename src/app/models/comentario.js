@@ -2,15 +2,15 @@ import mongoose, { Schema } from "mongoose";
 
 const comentarioSchema = new mongoose.Schema(
   {
-    IdUser: {
+    iduser: {
     type: String,
     required: true,
     },
-    IdNoticia: {
+    idnoticia: {
     type: String,
     required: true,
     },
-    Contenido: {
+    contenido: {
     type: String,
     required: true,
     }
