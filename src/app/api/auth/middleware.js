@@ -11,7 +11,7 @@ export async function middleware(req) {
     return NextResponse.redirect(url);
   }
 
-  if (url.pathname.startsWith("/crear-noticia") && token.user?.tipo !== "autor") {
+  if (url.pathname.startsWith("/crear-noticia") && token.usuario?.tipo !== "autor") {
     url.pathname = "/no-autorizado";
     return NextResponse.redirect(url);
   }
