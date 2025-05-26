@@ -11,7 +11,8 @@ export async function middleware(req) {
     return NextResponse.redirect(url);
   }
 
-  if (url.pathname.startsWith("/crear-noticia") && token.usuario?.tipo !== "autor") {
+  // crear noticia solo debe estar disponibkle para los autores
+  if (url.pathname.startsWith("/crear-noticia") && token.Usuario?.tipo !== "autor") {
     url.pathname = "/no-autorizado";
     return NextResponse.redirect(url);
   }

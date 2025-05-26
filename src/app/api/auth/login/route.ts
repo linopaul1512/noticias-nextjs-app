@@ -13,7 +13,7 @@ const handler = NextAuth({
       name: "Credentials",
       id: "credentials",
       credentials: {
-        correo: { label: "Correo", type: "text", placeholder: "correo@dominio.com" },
+        correo: { label: "Correo", type: "text", placeholder: "correo" },
         contrasena: { label: "Contraseña", type: "password" },
       },
       
