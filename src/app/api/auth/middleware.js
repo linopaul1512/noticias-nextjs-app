@@ -2,7 +2,6 @@ import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import Usuario from "@/app/models/usuario";
 
-
 export async function middleware(req) {
   const token = await getToken({ req });
   const url = req.nextUrl.clone();
@@ -12,7 +11,7 @@ export async function middleware(req) {
     return NextResponse.redirect(url);
   }
 
-  if (url.pathname.startsWith("/crear-noticia") && token.tipo !== "autor") {
+  if (url.pathname.startsWith("/crear-noticia") && token.user?.tipo !== "autor") {
     url.pathname = "/no-autorizado";
     return NextResponse.redirect(url);
   }

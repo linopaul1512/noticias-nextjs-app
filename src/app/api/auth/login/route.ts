@@ -5,6 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
+//Ruta para iniciar sesión
+
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -14,18 +16,22 @@ const handler = NextAuth({
         correo: { label: "Correo", type: "text", placeholder: "correo@dominio.com" },
         contrasena: { label: "Contraseña", type: "password" },
       },
+      
       async authorize(credentials) {
+        if (!credentials?.correo || !credentials?.contrasena) {
+          throw new Error("Debe proporcionar correo y contraseña");
+        }
+
         await connectDB();
 
         const userFound = await Usuario.findOne({
-          correo: credentials?.correo,
+          correo: credentials.correo,
         });
-
 
         if (!userFound) throw new Error("Credenciales inválidas");
 
         const passwordMatch = await bcrypt.compare(
-          credentials!.contrasena,
+          credentials.contrasena,
           userFound.contrasena
         );
 
@@ -34,7 +40,7 @@ const handler = NextAuth({
         return {
           id: userFound._id,
           correo: userFound.correo,
-          tipo: userFound.tipo, // rol del usuario (en la tabla usuariotipo es su rol)
+          tipo: userFound.tipo,
         };
       },
     }),
