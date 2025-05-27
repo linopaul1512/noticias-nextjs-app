@@ -3,7 +3,7 @@ import  connectDB  from "@/app/libs/mongoDB";
 import Categoria from '@/app/models/categoria';
 
 
-//agregar categoría
+//agregar categoría2
 export async function POST(request) {
   try {
     await connectDB();
