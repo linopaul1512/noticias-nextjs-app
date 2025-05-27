@@ -20,7 +20,7 @@ const handler = NextAuth({
       async authorize(credentials) {
         if (!credentials?.correo || !credentials?.contrasena) {
           throw new Error("Debe proporcionar correo y contraseña");
-        }
+        }//
 
         await connectMongoDB();
 
