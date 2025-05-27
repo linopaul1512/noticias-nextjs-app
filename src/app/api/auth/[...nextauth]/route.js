@@ -1,4 +1,4 @@
-import  connectDB  from "@/app/libs/mongoDB";
+import connectDB from "@/app/libs/mongoDB";
 import Usuario from "@/app/models/usuario";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -22,7 +22,7 @@ const handler = NextAuth({
           throw new Error("Debe proporcionar correo y contraseña");
         }
 
-        await connectDB();
+        await connectMongoDB();
 
         const userFound = await Usuario.findOne({
           correo: credentials.correo,
