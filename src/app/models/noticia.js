@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
 const noticiaSchema = new mongoose.Schema({
   fecha: { type: Date, default: Date.now },
@@ -10,6 +10,6 @@ const noticiaSchema = new mongoose.Schema({
   imagen: { type: String },
 });
 
-const Noticia = mongoose.models.Noticia || mongoose.model('Noticia', noticiaSchema);
+const Noticia = mongoose.model.Noticia || mongoose.model('Noticia', noticiaSchema);
 
 export default Noticia;

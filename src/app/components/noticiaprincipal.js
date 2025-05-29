@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Noticia from "../models/noticia";
-import axios from "axios";
 
 export default function NoticiaPrincipal() {
   const [noticia, setNoticia] = useState(null);

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ComentarioFormModal from "@/app/components/ComentarioFormModal";
+import AddCommentButton from "../components/botoncomentario";
 import axios from "axios";
 import Noticia from "../models/noticia";
 import NoticiaPrincipal from "../components/noticiaprincipal";

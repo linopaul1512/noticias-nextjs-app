@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
 const categoriaSchema = new mongoose.Schema({
   nombre: {
@@ -7,6 +7,6 @@ const categoriaSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-const Categoria = mongoose.models.Categoria || mongoose.model('Categoria', categoriaSchema);
+const Categoria = mongoose.model.Categoria || mongoose.model('Categoria', categoriaSchema);
 
 export default Categoria;
