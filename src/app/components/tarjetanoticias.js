@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Noticia from '../models/noticia';
 
+
 export default function TarjetaNoticias({ noticia }) {
   const router = useRouter();
 

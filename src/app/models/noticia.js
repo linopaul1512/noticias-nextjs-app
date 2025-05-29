@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from 'mongoose';
 
 const noticiaSchema = new mongoose.Schema(
   {
@@ -30,7 +30,7 @@ const noticiaSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Noticia =
-  mongoose.models.Noticia || mongoose.model("Noticia", noticiaSchema);
+const Noticia = mongoose.models.Noticia || mongoose.model('Noticia', noticiaSchema);
 
 export default Noticia;
+

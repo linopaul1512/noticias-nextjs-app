@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { Form, Button, Container, Alert } from "react-bootstrap";
+import axios from "axios";
 
 export default function RegistroPage() {
   const [form, setForm] = useState({});
