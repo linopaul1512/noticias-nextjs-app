@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import Noticia from '@/app/models/noticia';
-//import { authOptions } from '../auth/login/route'; 
-//import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/login/route'; 
+import { getServerSession } from 'next-auth';
 
 
 
@@ -19,7 +19,7 @@ export async function GET() {
   }
 }
 
-/*
+
 export async function POST(request) {
   const session = await getServerSession(authOptions);
 
@@ -46,4 +46,4 @@ export async function POST(request) {
     console.error('Error al crear la noticia:', error);
     return NextResponse.json({ error: 'Error al crear la noticia' }, { status: 500 });
   }
-}*/
+}
