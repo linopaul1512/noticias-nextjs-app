@@ -1,8 +1,11 @@
-import NewsCard from './components/NewsCard';
-import Noticia from '@app/models/noticias';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import NoticiasCard from './components/noticiasCard';
 
 async function getNoticias() {
-  const res = await fetch('http://localhost:3000/noticias', { cache: 'no-store' });
+  const res = await fetch('http://localhost:3000/api/noticias', { 
+    cache: 'no-store' 
+  });
+  if (!res.ok) throw new Error('Error al cargar noticias');
   return res.json();
 }
 
@@ -10,27 +13,26 @@ export default async function NoticiasPage() {
   const noticias = await getNoticias();
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <section className="container mx-auto py-12 px-4">
-        <h1 className="text-3xl font-bold text-center mb-12 text-gray-800">Últimas Noticias</h1>
-        
-        {noticias.length === 0 ? (
-          <p className="text-center text-gray-500">No hay noticias disponibles.</p>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {noticias.map((noticia) => (
-              <NewsCard
-                key={noticia._id}
+    <Container className="py-5">
+      <h1 className="text-center mb-5 display-4">Últimas Noticias</h1>
+      
+      {noticias.length === 0 ? (
+        <p className="text-center text-muted">No hay noticias disponibles</p>
+      ) : (
+        <Row xs={1} md={2} lg={3} className="g-4">
+          {noticias.map((noticia) => (
+            <Col key={noticia._id}>
+              <NoticiasCard
                 id={noticia._id}
                 titulo={noticia.titulo}
                 contenido={noticia.contenido}
                 autor={noticia.autor}
                 imagen={noticia.imagen}
               />
-            ))}
-          </div>
-        )}
-      </section>
-    </main>
+            </Col>
+          ))}
+        </Row>
+      )}
+    </Container>
   );
 }

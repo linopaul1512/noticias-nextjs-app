@@ -1,22 +1,29 @@
 import Link from 'next/link';
+import { Card, Button } from 'react-bootstrap';
 
-export default function noticiasCard({ id, titulo, contenido, autor, imagen }) {
+export default function NoticiasCard({ id, titulo, contenido, autor, imagen }) {
   return (
-    <Link href={`/noticias/${id}`} className="block hover:shadow-lg transition-shadow">
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        {imagen && (
-          <img
-            src={imagen}
-            alt={titulo}
-            className="w-full h-48 object-cover"
-          />
-        )}
-        <div className="p-4">
-          <h3 className="text-xl font-semibold mb-2">{titulo}</h3>
-          <p className="text-gray-600 line-clamp-2 mb-3">{contenido}</p>
-          <p className="text-sm text-gray-500">Por: {autor}</p>
-        </div>
-      </div>
-    </Link>
+    <Card className="h-100 shadow-sm">
+      {imagen && (
+        <Card.Img 
+          variant="top" 
+          src={imagen} 
+          alt={titulo}
+          style={{ height: '200px', objectFit: 'cover' }}
+        />
+      )}
+      <Card.Body className="d-flex flex-column">
+        <Card.Title>{titulo}</Card.Title>
+        <Card.Text className="text-truncate">
+          {contenido}
+        </Card.Text>
+        <Card.Text className="text-muted mt-auto">
+          <small>Por: {autor}</small>
+        </Card.Text>
+        <Link href={`/noticias/${id}`} passHref>
+          <Button variant="outline-primary" className="mt-3">Leer más</Button>
+        </Link>
+      </Card.Body>
+    </Card>
   );
 }

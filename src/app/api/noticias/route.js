@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
+import { connectDB } from '@/libs/mongodb';
 import Noticia from '@/app/models/noticia';
 //import { authOptions } from '../auth/login/route'; 
 //import { getServerSession } from 'next-auth';
-
-
 
 
 export async function GET() {
