@@ -10,7 +10,7 @@ const noticiaSchema = new mongoose.Schema(
     type: String,
     required: true,
     },
-    descipcion:{
+    descripcion:{
     type: String,
     required: true,
     },
