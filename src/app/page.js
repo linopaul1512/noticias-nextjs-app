@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import Navbar from './components/navbar';
 import Footer from './components/footer';
+import NoticiaPrincipal from './components/noticiaprincipal';
 import TarjetaNoticias from './components/tarjetanoticias';
+import axios from 'axios';
 
 export default function HomePage() {
   const [noticias, setNoticias] = useState([]);

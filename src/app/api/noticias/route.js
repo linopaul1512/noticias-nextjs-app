@@ -55,3 +55,18 @@ export async function POST(request) {
     );
   }
 }
+
+
+export async function GET() {
+  try {
+    await connectDB();
+    const noticias = await Noticia.find();
+    return NextResponse.json(noticias, { status: 200 }); 
+
+  } catch (error) {
+    console.error("Error al obtener las noticias:", error);
+    return NextResponse.json({ error: 'Error al obtener las noticias' }, { status: 500 });
+  }
+}
+
+
