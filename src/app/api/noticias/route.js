@@ -47,3 +47,4 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Error al crear la noticia' }, { status: 500 });
   }
 }
+
