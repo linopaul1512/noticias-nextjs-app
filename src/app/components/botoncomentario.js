@@ -1,8 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Comentario from '../models/comentario';
-import Noticia from '../models/noticia';
 
 export default function AddCommentButton({ noticiaId }) {
   const [open, setOpen] = useState(false);
