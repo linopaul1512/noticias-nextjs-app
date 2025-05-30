@@ -1,10 +1,9 @@
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
-import Usuario from "@/app/models/usuario";
 
-export async function middleware(req) {
-  const token = await getToken({ req });
-  const url = req.nextUrl.clone();
+export async function middleware(request) {
+  const token = request.cookies.get('sessionToken')?.value;
+  const { pathname } = request.nextUrl;
 
   if (!token) {
     url.pathname = "/login";
@@ -23,3 +22,4 @@ export async function middleware(req) {
 export const config = {
   matcher: ["/crear-noticia/:path*"],
 };
+
