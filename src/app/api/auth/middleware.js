@@ -1,25 +1,20 @@
-import { getToken } from "next-auth/jwt";
-import { NextResponse } from "next/server";
-import Usuario from "@/app/models/usuario";
+import { NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken';
 
-export async function middleware(req) {
-  const token = await getToken({ req });
-  const url = req.nextUrl.clone();
+export async function middleware(request) {
+  const token = request.cookies.get('sessionToken')?.value;
+  const { pathname } = request.nextUrl;
 
-  if (!token) {
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  // crear noticia solo debe estar disponible para los autores
-  if (url.pathname.startsWith("/crear-noticia") && token.Usuario?.tipo !== "autor") {
-    url.pathname = "/no-autorizado";
-    return NextResponse.redirect(url);
+  if (pathname.startsWith('/crear-noticia')) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      if (decoded.tipo !== 'autor') {
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
+    } catch (error) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   }
 
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: ["/crear-noticia/:path*"],
-};

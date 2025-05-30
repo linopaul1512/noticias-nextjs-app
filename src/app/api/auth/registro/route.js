@@ -9,9 +9,9 @@ export async function POST(request) {
     await connectDB ();
 
     const data = await request.json();
-
+    
     // Verificar que mno estén vacíos ls documentos
-    const camposRequeridos = ["nombre", "apellido", "nombreusuario", "tipo", "contrasena", "correo", "telefono"];
+    const camposRequeridos = ["nombre", "apellido", "nombreusuario", "contrasena", "correo", "telefono"];
     for (const campo of camposRequeridos) {
       if (!data[campo]) {
         return NextResponse.json({ error: `Falta el campo: ${campo}` }, { status: 400 });
@@ -31,6 +31,7 @@ export async function POST(request) {
     const nuevoUsuario = new Usuario({
       ...data,
       contrasena: hashedPassword,
+      tipo:"lector"
     });
 
     await nuevoUsuario.save();

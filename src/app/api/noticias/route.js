@@ -1,10 +1,69 @@
 import { NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { connectDB } from '@/libs/mongodb';
+=======
+import connectDB from '@/app/libs/mongoDB';
+>>>>>>> 3463fbc8d3b299669e74a399ff2a79cf0192df44
 import Noticia from '@/app/models/noticia';
-//import { authOptions } from '../auth/login/route'; 
-//import { getServerSession } from 'next-auth';
+import jwt from 'jsonwebtoken';
+
+export async function POST(request) {
+  await connectDB();
+  
+  try {
+    // Verificación de token y rol
+    const token = request.headers.get('authorization')?.split(' ')[1];
+    if (!token) {
+      return NextResponse.json({ error: 'Token no proporcionado' }, { status: 401 });
+    }
+
+<<<<<<< HEAD
+=======
+    //verificar si eres autor
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.tipo !== 'autor') {
+      return NextResponse.json({ error: 'Solo autores pueden crear noticias' }, { status: 403 });
+    }
+
+    //campos no pueden estar vacíos
+    const { titular, descripcion, cuerpo, categoría, imagen } = await request.json();
+    if (!titular || !descripcion || !cuerpo || !categoría) {
+      return NextResponse.json({ error: 'Faltan campos obligatorios' }, { status: 400 });
+    }
+
+    
+    const nuevaNoticia = new Noticia({
+      titular,
+      descripcion,
+      cuerpo,
+      categoría,
+      imagen: imagen || null,
+      iduser: decoded.userId
+    });
+
+    await nuevaNoticia.save();
+    return NextResponse.json({ 
+      message: 'Noticia creada exitosamente',
+      noticia: {
+        id: nuevaNoticia._id,
+        titular: nuevaNoticia.titular
+      }
+    }, { status: 201 });
+
+  } catch (error) {
+    console.error('Error:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return NextResponse.json({ error: 'Token inválido' }, { status: 401 });
+    }
+    return NextResponse.json(
+      { error: error.message || 'Error interno del servidor' },
+      { status: 500 }
+    );
+  }
+}
 
 
+>>>>>>> 3463fbc8d3b299669e74a399ff2a79cf0192df44
 export async function GET() {
   try {
     await connectDB();
@@ -17,31 +76,4 @@ export async function GET() {
   }
 }
 
-/*
-export async function POST(request) {
-  const session = await getServerSession(authOptions);
 
-  if (!session) {
-    return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
-  }
-
-  if (session.user.Tipo !== 'autor') {
-    return NextResponse.json({ error: 'No autorizado. Solo los autores pueden crear noticias.' }, { status: 403 });
-  }
-
-  try {
-    await connectDB();
-    const data = await request.json();
-
-    const nuevaNoticia = new Noticia({
-      ...data,
-      autor: session.user.Correo, 
-    });
-
-    await nuevaNoticia.save();
-    return NextResponse.json(nuevaNoticia, { status: 201 });
-  } catch (error) {
-    console.error('Error al crear la noticia:', error);
-    return NextResponse.json({ error: 'Error al crear la noticia' }, { status: 500 });
-  }
-}*/

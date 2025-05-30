@@ -2,23 +2,25 @@ import mongoose, { Schema } from "mongoose";
 
 const comentarioSchema = new mongoose.Schema(
   {
+    
     iduser: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,   
     required: true,
+    ref: 'Usuario',
     },
-    idnoticia: {
-    type: String,
+    noticia: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Noticia',
     required: true,
     },
     contenido: {
     type: String,
     required: true,
-    }
+    },
+    fecha: { 
+      type: Date, 
+      default: Date.now }
+
   },
   { timestamps: true }
 );
-
-const Comentario =
-  mongoose.models.Comentario || mongoose.model("Comentario", comentarioSchema);
-
-export default Comentario;

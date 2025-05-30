@@ -1,36 +1,15 @@
 import mongoose, { Schema } from "mongoose";
 
-const noticiaSchema = new mongoose.Schema(
-  {
-    fecha: {
-    type: Date,
-    required: true,
-    },
-    titular: {
-    type: String,
-    required: true,
-    },
-    descipcion:{
-    type: String,
-    required: true,
-    },
-    cuerpo: {
-    type: String,
-    required: true,
-    },
-    categoría: {
-    type: String,
-    required: true,
-    },
-    iduser: {
-    type: String,
-    required: true,
-    },
-  },
-  { timestamps: true }
-);
+const noticiaSchema = new mongoose.Schema({
+  fecha: { type: Date, default: Date.now },
+  titular: { type: String, required: true },
+  descripcion: { type: String, required: true }, 
+  cuerpo: { type: String, required: true },
+  categoria: { type: String, required: true },
+  iduser: { type: mongoose.Schema.Types.ObjectId, ref: 'Noticia', required: true },
+  imagen: { type: String },
+});
 
-const Noticia =
-  mongoose.models.Noticia || mongoose.model("Noticia", noticiaSchema);
+const Noticia = mongoose.models.Noticia || mongoose.model('Noticia', noticiaSchema);
 
 export default Noticia;

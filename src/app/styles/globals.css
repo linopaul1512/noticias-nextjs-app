@@ -1,6 +1,41 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'bootstrap/scss/bootstrap';
 
+/* Estilos personalizados para noticias */
+.noticia-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.noticia-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.categoria-badge {
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* Ajustes para el formulario */
+.form-noticia {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+/* Estilos para el detalle de noticia */
+.contenido-noticia {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.contenido-noticia img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
 .card {
   border-radius: 1rem;
 }
