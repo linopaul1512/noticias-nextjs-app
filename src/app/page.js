@@ -29,6 +29,7 @@ export default function HomePage() {
 
   const noticiaPrincipal = noticias[0];
   const otrasNoticias = noticias.slice(1);
+  
 
   return (
     <div>
