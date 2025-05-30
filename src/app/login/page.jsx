@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -21,10 +23,7 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          correo: email,
-          contrasena: password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -33,8 +32,7 @@ export default function Login() {
         throw new Error(data.error || 'Error al iniciar sesión');
       }
 
-      
-      router.push('/api/noticias');
+      router.push('/');
     } catch (err) {
       setError(err.message);
       setIsLoading(false);
@@ -67,9 +65,7 @@ export default function Login() {
 
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                      Correo Electrónico
-                    </label>
+                    <label htmlFor="email" className="form-label">Correo Electrónico</label>
                     <input
                       type="email"
                       className="form-control"
@@ -82,9 +78,7 @@ export default function Login() {
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="password" className="form-label">
-                      Contraseña
-                    </label>
+                    <label htmlFor="password" className="form-label">Contraseña</label>
                     <input
                       type="password"
                       className="form-control"
@@ -97,11 +91,7 @@ export default function Login() {
                   </div>
 
                   <div className="d-grid mb-3">
-                    <button
-                      type="submit"
-                      className="btn btn-primary btn-lg"
-                      disabled={isLoading}
-                    >
+                    <button type="submit" className="btn btn-primary btn-lg" disabled={isLoading}>
                       {isLoading ? (
                         <>
                           <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -125,7 +115,7 @@ export default function Login() {
             <div className="text-center mt-3">
               <p className="text-muted">
                 ¿No tienes una cuenta?{' '}
-                <Link href="/register" className="text-decoration-none">
+                <Link href="/registro" className="text-decoration-none">
                   Regístrate aquí
                 </Link>
               </p>
