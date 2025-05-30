@@ -17,7 +17,7 @@ export async function POST(request) {
     const usuario = await Usuario.findOne({ correo });
 
     if (!usuario) {
-      return NextResponse.json({ error: 'Usuario no encontra, verifique los datos introducidos' }, { status: 401 });
+      return NextResponse.json({ error: 'Usuario no encontrado, verifique los datos introducidos' }, { status: 401 });
     }
 
     const passwordValida = await bcrypt.compare(contrasena, usuario.contrasena);

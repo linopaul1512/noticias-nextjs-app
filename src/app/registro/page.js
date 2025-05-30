@@ -1,176 +1,68 @@
 "use client";
 import { useState } from "react";
-import { Form, Button, Container, Alert, Card, Row, Col } from "react-bootstrap";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export default function RegistroPage() {
-  const [form, setForm] = useState({});
-  const [mensaje, setMensaje] = useState({ text: "", variant: "" });
-  const [validated, setValidated] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+export default function Registro() {
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    
-    if (form.checkValidity() === false) {
-      e.stopPropagation();
-      setValidated(true);
-      return;
-    }
+    setError("");
+
+    const formData = {
+      nombre: e.target.nombre.value,
+      apellido: e.target.apellido.value,
+      nombreusuario: e.target.nombreusuario.value,
+      correo: e.target.correo.value,
+      telefono: e.target.telefono.value,
+      contrasena: e.target.contrasena.value,
+      tipo: "lector", // Campo fijo
+    };
 
     try {
       const res = await fetch("/api/auth/registro", {
         method: "POST",
-        body: JSON.stringify(form),
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-      
-      const data = await res.json();
-      
-      if (res.ok) {
-        setMensaje({ text: "¡Registro exitoso! Redirigiendo...", variant: "success" });
-        setTimeout(() => window.location.href = "/login", 2000);
-      } else {
-        setMensaje({ text: data.message || "Error en el registro", variant: "danger" });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Error al registrar");
       }
-    } catch (error) {
-      setMensaje({ text: "Error de conexión", variant: "danger" });
+
+      router.push("/login");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col md={8} lg={6}>
-          <Card className="shadow-lg border-0">
-            <Card.Body className="p-5">
-              <div className="text-center mb-4">
-                <h2 className="fw-bold text-primary">Registro de Lector</h2>
-                <p className="text-muted">Únete a nuestra comunidad</p>
-              </div>
+    <div>
+      <h1>Registro</h1>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required />
 
-              {mensaje.text && (
-                <Alert variant={mensaje.variant} className="text-center">
-                  {mensaje.text}
-                </Alert>
-              )}
+        <label htmlFor="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required />
 
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Nombre</Form.Label>
-                      <Form.Control 
-                        name="nombre" 
-                        onChange={handleChange} 
-                        required 
-                        placeholder="Ej: María"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Por favor ingresa tu nombre
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Apellido</Form.Label>
-                      <Form.Control 
-                        name="apellido" 
-                        onChange={handleChange} 
-                        required 
-                        placeholder="Ej: González"
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Por favor ingresa tu apellido
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                </Row>
+        <label htmlFor="nombreusuario">Nombre de usuario:</label>
+        <input type="text" id="nombreusuario" name="nombreusuario" required />
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Nombre de Usuario</Form.Label>
-                  <Form.Control 
-                    name="nombreUsuario" 
-                    onChange={handleChange} 
-                    required 
-                    placeholder="Ej: maria2023"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Elige un nombre de usuario
-                  </Form.Control.Feedback>
-                </Form.Group>
+        <label htmlFor="correo">Correo:</label>
+        <input type="email" id="correo" name="correo" required />
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Correo Electrónico</Form.Label>
-                  <Form.Control 
-                    type="email" 
-                    name="correo" 
-                    onChange={handleChange} 
-                    required 
-                    placeholder="Ej: ejemplo@correo.com"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Ingresa un correo válido
-                  </Form.Control.Feedback>
-                </Form.Group>
+        <label htmlFor="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required />
 
-                <Form.Group className="mb-3">
-                  <Form.Label>Teléfono</Form.Label>
-                  <Form.Control 
-                    name="telefono" 
-                    onChange={handleChange} 
-                    required 
-                    placeholder="Ej: 3001234567"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Proporciona tu teléfono
-                  </Form.Control.Feedback>
-                </Form.Group>
+        <label htmlFor="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required minLength="6" />
 
-                <Form.Group className="mb-4">
-                  <Form.Label>Contraseña</Form.Label>
-                  <Form.Control 
-                    type="password" 
-                    name="contrasena" 
-                    onChange={handleChange} 
-                    required 
-                    minLength={6}
-                    placeholder="Mínimo 6 caracteres"
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    La contraseña debe tener al menos 6 caracteres
-                  </Form.Control.Feedback>
-                </Form.Group>
-
-                <div className="d-grid mb-3">
-                  <Button 
-                    variant="primary" 
-                    type="submit" 
-                    size="lg"
-                    className="fw-bold"
-                  >
-                    Registrarse
-                  </Button>
-                </div>
-
-                <div className="text-center">
-                  <p className="text-muted">
-                    ¿Ya tienes cuenta?{" "}
-                    <Link href="/login" className="text-decoration-none fw-bold">
-                      Inicia Sesión
-                    </Link>
-                  </p>
-                </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+        <button type="submit">Registrarse</button>
+      </form>
+    </div>
   );
 }
