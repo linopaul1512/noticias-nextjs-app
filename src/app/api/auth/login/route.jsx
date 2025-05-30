@@ -26,16 +26,21 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Contraseña incorrecta' }, { status: 401 });
     }
 
-    const token = jwt.sign({ userId: usuario._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    //declaramos token de una hora de duracion
+    const token = jwt.sign({id: usuario._id, tipo: usuario.tipo, nombre: usuario.nombre}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    const response = NextResponse.json({ message: 'Inicio de sesión exitoso' }, { status: 200 });
-    response.cookies.set('sessionToken', token, { httpOnly: true, path: '/' });
+    const response = NextResponse.json({ message: 'Inicio de sesión exitoso' },{ status: 200 });
 
+      //mandamos las cookies al nevagador
+    response.cookies.set('sessionToken', token, {httpOnly: true, path: '/', secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 60 * 60});
+    
+    
     return response;
-
   } catch (error) {
     console.error('Error en login:', error);
-    return NextResponse.json({ error: 'Error al iniciar sesión' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Error interno al iniciar sesión' },
+      { status: 500 }
+    );
   }
 }
-

@@ -1,18 +1,18 @@
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-export async function middleware(request) {
+
+export function middleware(request) {
   const token = request.cookies.get('sessionToken')?.value;
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith('/crear-noticia')) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      if (decoded.tipo !== 'autor') {
-        return NextResponse.redirect(new URL('/login', request.url));
-      }
-    } catch (error) {
-      return NextResponse.redirect(new URL('/login', request.url));
+    const user = token ? jwt.decode(token) : null;
+
+    if (!user || user.role !== 'autor') {
+      return NextResponse.redirect(new URL('/no-autorizado', request.url), {
+        status: 403,
+      });
     }
   }
 
