@@ -1,29 +1,29 @@
 import Link from 'next/link';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Badge } from 'react-bootstrap';
 
-export default function NoticiasCard({ id, titulo, contenido, autor, imagen }) {
+export default function NoticiaCard({ noticia }) {
   return (
-    <Card className="h-100 shadow-sm">
-      {imagen && (
+    <Card className="h-100 shadow-sm noticia-card">
+      {noticia.imagen && (
         <Card.Img 
           variant="top" 
-          src={imagen} 
-          alt={titulo}
+          src={noticia.imagen} 
+          alt={noticia.titular}
           style={{ height: '200px', objectFit: 'cover' }}
         />
       )}
-      <Card.Body className="d-flex flex-column">
-        <Card.Title>{titulo}</Card.Title>
-        <Card.Text className="text-truncate">
-          {contenido}
-        </Card.Text>
-        <Card.Text className="text-muted mt-auto">
-          <small>Por: {autor}</small>
-        </Card.Text>
-        <Link href={`/noticias/${id}`} passHref>
-          <Button variant="outline-primary" className="mt-3">Leer más</Button>
-        </Link>
+      <Card.Body>
+        <Badge bg="secondary" className="mb-2 categoria-badge">
+          {noticia.categoría}
+        </Badge>
+        <Card.Title>{noticia.titular}</Card.Title>
+        <Card.Text className="text-truncate">{noticia.descripcion}</Card.Text>
       </Card.Body>
+      <Card.Footer className="bg-white">
+        <Link href={`/noticias/${noticia._id}`} passHref>
+          <button className="btn btn-outline-primary">Leer más</button>
+        </Link>
+      </Card.Footer>
     </Card>
   );
 }

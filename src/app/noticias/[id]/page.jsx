@@ -1,65 +1,35 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { Container, Card, Spinner, Alert, Badge, Button } from 'react-bootstrap';
+import { Container, Card, Badge, Button, Spinner, Alert } from 'react-bootstrap';
 import Link from 'next/link';
 
-export default function DetalleNoticiaPage() {
-  const [noticia, setNoticia] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const router = useRouter();
-  const { id } = router.query;
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchNoticia = async () => {
-      try {
-        const response = await fetch(`/api/noticias/${id}`);
-        const data = await response.json();
-        
-        if (!response.ok) throw new Error(data.error || 'Error al cargar noticia');
-        
-        setNoticia(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNoticia();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <Spinner animation="border" variant="primary" />
-      </div>
-    );
+async function getNoticia(id) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/noticias/${id}`);
+    if (!res.ok) throw new Error('Noticia no encontrada');
+    return await res.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return null;
   }
+}
 
-  if (error) {
+export default async function DetalleNoticia({ params }) {
+  const noticia = await getNoticia(params.id);
+
+  if (!noticia) {
     return (
       <Container className="py-5">
-        <Alert variant="danger">{error}</Alert>
-        <Button variant="secondary" onClick={() => router.push('/noticias')}>
-          Volver al listado
-        </Button>
+        <Alert variant="danger">No se pudo cargar la noticia</Alert>
+        <Link href="/noticias">
+          <Button variant="secondary">Volver al listado</Button>
+        </Link>
       </Container>
     );
   }
 
   return (
     <Container className="py-5">
-      <Head>
-        <title>{noticia.titular}</title>
-        <meta name="description" content={noticia.descripcion} />
-      </Head>
-
       <div className="text-end mb-3">
-        <Link href="/noticias" passHref>
+        <Link href="/noticias">
           <Button variant="outline-secondary">← Volver al listado</Button>
         </Link>
       </div>
@@ -76,12 +46,12 @@ export default function DetalleNoticiaPage() {
         
         <Card.Body>
           <Badge bg="info" className="mb-3">{noticia.categoría}</Badge>
-          <Card.Title as="h1" className="display-5 mb-3">{noticia.titular}</Card.Title>
-          <Card.Subtitle className="mb-4 text-muted">{noticia.descripcion}</Card.Subtitle>
+          <h1 className="display-5 mb-3">{noticia.titular}</h1>
+          <p className="text-muted mb-4">{noticia.descripcion}</p>
           
-          <Card.Text className="fs-5" style={{ whiteSpace: 'pre-line' }}>
+          <div className="fs-5" style={{ whiteSpace: 'pre-line' }}>
             {noticia.cuerpo}
-          </Card.Text>
+          </div>
         </Card.Body>
         
         <Card.Footer className="text-muted bg-white">

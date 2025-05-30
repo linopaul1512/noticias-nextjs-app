@@ -1,157 +1,44 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { Container, Form, Button, Alert, Spinner, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Alert, Button } from 'react-bootstrap';
+import NoticiaCard from './components/noticiasCard';
+import Link from 'next/link';
 
-export default function NuevaNoticiaPage() {
-  const [formData, setFormData] = useState({
-    titular: '',
-    descripcion: '',
-    cuerpo: '',
-    categoría: '',
-    imagen: ''
-  });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+async function getNoticias() {
+  try {
+    const res = await fetch('http://localhost:3000/api/noticias');
+    if (!res.ok) throw new Error('Error al cargar noticias');
+    return await res.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
+  }
+}
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess('');
-
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('Debes iniciar sesión');
-
-      const response = await fetch('/api/noticias', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) throw new Error(data.error || 'Error al crear noticia');
-
-      setSuccess('Noticia creada exitosamente');
-      setTimeout(() => {
-        router.push(`/noticias/${data.noticia.id}`);
-      }, 1500);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+export default async function NoticiasPage() {
+  const noticias = await getNoticias();
 
   return (
     <Container className="py-5">
-      <Head>
-        <title>Crear Nueva Noticia</title>
-      </Head>
-
-      <Row className="justify-content-center">
-        <Col md={8} lg={6}>
-          <h1 className="mb-4 text-center">Crear Nueva Noticia</h1>
-
-          {error && <Alert variant="danger">{error}</Alert>}
-          {success && <Alert variant="success">{success}</Alert>}
-
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Título</Form.Label>
-              <Form.Control
-                type="text"
-                name="titular"
-                value={formData.titular}
-                onChange={handleChange}
-                required
-                placeholder="Título impactante"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Descripción breve</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-                required
-                placeholder="Resumen de la noticia"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Cuerpo completo</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={6}
-                name="cuerpo"
-                value={formData.cuerpo}
-                onChange={handleChange}
-                required
-                placeholder="Contenido detallado de la noticia"
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Categoría</Form.Label>
-              <Form.Select
-                name="categoría"
-                value={formData.categoría}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Selecciona una categoría</option>
-                <option value="Tecnología">Tecnología</option>
-                <option value="Deportes">Deportes</option>
-                <option value="Política">Política</option>
-                <option value="Entretenimiento">Entretenimiento</option>
-                <option value="Salud">Salud</option>
-              </Form.Select>
-            </Form.Group>
-
-            <Form.Group className="mb-4">
-              <Form.Label>URL de la imagen (opcional)</Form.Label>
-              <Form.Control
-                type="url"
-                name="imagen"
-                value={formData.imagen}
-                onChange={handleChange}
-                placeholder="https://ejemplo.com/imagen.jpg"
-              />
-            </Form.Group>
-
-            <div className="d-grid gap-2">
-              <Button 
-                variant="primary" 
-                type="submit" 
-                disabled={loading}
-                size="lg"
-              >
-                {loading ? (
-                  <>
-                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                    {' Publicando...'}
-                  </>
-                ) : 'Publicar Noticia'}
-              </Button>
-            </div>
-          </Form>
+      <Row className="mb-4">
+        <Col>
+          <h1 className="display-4 text-center">Últimas Noticias</h1>
+          <p className="text-center text-muted">Mantente informado con lo último</p>
         </Col>
+      </Row>
+
+      <Row className="mb-4">
+        <Col className="text-end">
+          <Link href="/noticias/nueva">
+            <Button variant="success">Crear Nueva Noticia</Button>
+          </Link>
+        </Col>
+      </Row>
+
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {noticias.map((noticia) => (
+          <Col key={noticia._id}>
+            <NoticiaCard noticia={noticia} />
+          </Col>
+        ))}
       </Row>
     </Container>
   );

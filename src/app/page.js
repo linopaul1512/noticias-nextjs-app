@@ -5,6 +5,9 @@ import Navbar from './components/navbar';
 import Footer from './components/footer';
 import NoticiaPrincipal from './components/noticiaprincipal';
 import TarjetaNoticias from './components/tarjetanoticias';
+import NoticiasCard from './noticias/components/noticiasCard';
+import DetalleNoticiaPage from './noticias/[id]/page';
+import NuevaNoticiaPage from './noticias/page';
 import axios from 'axios';
 
 export default function HomePage() {
