@@ -92,10 +92,10 @@ export default function CrearNoticia() {
             required
           >
             <option value="">Seleccione...</option>
-            <option value="política">Política</option>
-            <option value="deportes">Deportes</option>
-            <option value="tecnología">Tecnología</option>
-            <option value="cultura">Cultura</option>
+            <option value="Regiones">Regiones</option>
+            <option value="Deportes">Deportes</option>
+            <option value="Economia">Economia</option>
+            <option value="Sucesos">Sucesos</option>
           </select>
         </div>
 
@@ -107,7 +107,7 @@ export default function CrearNoticia() {
             value={formData.imagen}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-            placeholder="https://ejemplo.com/imagen.jpg....tiene que ser un link web"
+            placeholder="https:..... que ser un link web"
           />
         </div>
 
