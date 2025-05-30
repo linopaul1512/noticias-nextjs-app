@@ -6,12 +6,12 @@ import Footer from './components/footer';
 import NoticiaPrincipal from './components/noticiaprincipal';
 import TarjetaNoticias from './components/tarjetanoticias';
 import NoticiasCard from './noticias/components/noticiasCard';
-import DetalleNoticiaPage from './noticias/[id]/page';
-import NuevaNoticiaPage from './noticias/page';
 import axios from 'axios';
 
 export default function HomePage() {
   const [noticias, setNoticias] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchNoticias = async () => {
@@ -35,31 +35,56 @@ export default function HomePage() {
   
 
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100">
       <Navbar />
-      <main className="container mt-5">
-        <section className="row mb-4">
-          <div className="col-md-8">
-            <h1 className="display-4">{noticiaPrincipal.titular}</h1>
-            <p>{noticiaPrincipal.descipcion}</p>
-          </div>
-          <div className="col-md-4">
-            <img
-              src={noticiaPrincipal.imagen}
-              className="img-fluid rounded"
-              alt="Noticia principal"
-            />
-          </div>
-        </section>
+      
+      <main className="flex-grow-1 py-4">
+        <Container className="mb-5">
+          <Row className="g-4 align-items-center">
+            <Col lg={8}>
+              <Badge bg="primary" className="mb-3">{noticiaPrincipal.categoría}</Badge>
+              <h1 className="display-4 mb-3">{noticiaPrincipal.titular}</h1>
+              <p className="lead">{noticiaPrincipal.descripcion}</p>
+              <Link 
+                href={`/noticias/${noticiaPrincipal._id}`} 
+                className="btn btn-primary btn-lg"
+              >
+                Leer más
+              </Link>
+            </Col>
+            <Col lg={4}>
+              <div className={styles.noticiaPrincipalImagen}>
+                <Image
+                  src={noticiaPrincipal.imagen || '/images/placeholder-noticia.jpg'}
+                  alt={noticiaPrincipal.titular}
+                  width={600}
+                  height={400}
+                  className="img-fluid rounded shadow"
+                  priority
+                />
+              </div>
+            </Col>
+          </Row>
+        </Container>
 
-        <section className="row">
-          {otrasNoticias.map((noticia) => (
-            <div key={noticia._id} className="col-md-4 mb-4">
-              <NoticiaCard noticia={noticia} />
-            </div>
-          ))}
-        </section>
+        <Container className="my-5">
+          <h2 className="text-center mb-5">Más Noticias</h2>
+          <Row xs={1} md={2} lg={3} className="g-4">
+            {otrasNoticias.map((noticia) => (
+              <Col key={noticia._id}>
+                <NoticiaCard noticia={noticia} />
+              </Col>
+            ))}
+          </Row>
+          
+          <div className="text-center mt-5">
+            <Link href="/noticias" className="btn btn-outline-primary">
+              Ver todas las noticias
+            </Link>
+          </div>
+        </Container>
       </main>
+
       <Footer />
     </div>
   );
