@@ -1,63 +1,93 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import Comentarios from '@/app/components/comentarios';
-import Navbar from '@/app/components/navbar';
-import Footer from '@/app/components/footer';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { Container, Card, Spinner, Alert, Badge, Button } from 'react-bootstrap';
+import Link from 'next/link';
 
-export default function NoticiaCompleta() {
-  const { id } = useParams();
+export default function DetalleNoticiaPage() {
   const [noticia, setNoticia] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
+    if (!id) return;
+
     const fetchNoticia = async () => {
       try {
-        const res = await fetch(`/api/noticias/${id}`);
-        const data = await res.json();
+        const response = await fetch(`/api/noticias/${id}`);
+        const data = await response.json();
+        
+        if (!response.ok) throw new Error(data.error || 'Error al cargar noticia');
+        
         setNoticia(data);
-      } catch (error) {
-        console.error('Error:', error);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchNoticia();
   }, [id]);
 
-  if (loading) return <p className="text-center my-8">Cargando...</p>;
-  if (!noticia) return <p className="text-center my-8">Noticia no encontrada</p>;
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container className="py-5">
+        <Alert variant="danger">{error}</Alert>
+        <Button variant="secondary" onClick={() => router.push('/noticias')}>
+          Volver al listado
+        </Button>
+      </Container>
+    );
+  }
 
   return (
-    <div>
-      <Navbar />
-      <main className="container mx-auto px-4 py-8">
-        <article className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-4">{noticia.titular}</h1>
+    <Container className="py-5">
+      <Head>
+        <title>{noticia.titular}</title>
+        <meta name="description" content={noticia.descripcion} />
+      </Head>
+
+      <div className="text-end mb-3">
+        <Link href="/noticias" passHref>
+          <Button variant="outline-secondary">← Volver al listado</Button>
+        </Link>
+      </div>
+
+      <Card className="border-0 shadow">
+        {noticia.imagen && (
+          <Card.Img 
+            variant="top" 
+            src={noticia.imagen} 
+            alt={noticia.titular}
+            style={{ maxHeight: '500px', objectFit: 'cover' }}
+          />
+        )}
+        
+        <Card.Body>
+          <Badge bg="info" className="mb-3">{noticia.categoría}</Badge>
+          <Card.Title as="h1" className="display-5 mb-3">{noticia.titular}</Card.Title>
+          <Card.Subtitle className="mb-4 text-muted">{noticia.descripcion}</Card.Subtitle>
           
-          <div className="flex items-center mb-6 text-gray-500">
-            <span>{new Date(noticia.fecha).toLocaleDateString()}</span>
-            <span className="mx-2">•</span>
-            <span>{noticia.categoría}</span>
-          </div>
-
-          {noticia.imagen && (
-            <img 
-              src={noticia.imagen} 
-              alt={noticia.titular} 
-              className="w-full h-auto mb-8 rounded-lg"
-            />
-          )}
-
-          <div className="prose max-w-none">
-            <p className="text-lg mb-4">{noticia.descripcion}</p>
-            <p className="whitespace-pre-line">{noticia.cuerpo}</p>
-          </div>
-        </article>
-
-        <Comentarios noticiaId={id} />
-      </main>
-      <Footer />
-    </div>
+          <Card.Text className="fs-5" style={{ whiteSpace: 'pre-line' }}>
+            {noticia.cuerpo}
+          </Card.Text>
+        </Card.Body>
+        
+        <Card.Footer className="text-muted bg-white">
+          Publicado el {new Date(noticia.createdAt).toLocaleDateString()}
+        </Card.Footer>
+      </Card>
+    </Container>
   );
 }
