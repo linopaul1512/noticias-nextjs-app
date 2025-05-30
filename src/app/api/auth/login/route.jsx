@@ -32,9 +32,9 @@ export async function POST(request) {
     const response = NextResponse.json({ message: 'Inicio de sesión exitoso' },{ status: 200 });
 
       //mandamos las cookies al nevagador
-    response.cookies.set('sessionToken', token, {httpOnly: true, path: '/', secure: process.env.NODE_ENV === 'production', sameSite: 'lax', maxAge: 60 * 60});
+    response.cookies.set('sessionToken', token, {httpOnly: true, path: '/', maxAge: 60 * 60});
     
-    
+
     return response;
   } catch (error) {
     console.error('Error en login:', error);

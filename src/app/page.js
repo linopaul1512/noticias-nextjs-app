@@ -1,63 +1,49 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+'use client'
 import Navbar from './components/navbar';
 import Footer from './components/footer';
-import NoticiaPrincipal from './components/noticiaprincipal';
-import TarjetaNoticias from './components/tarjetanoticias';
-import axios from 'axios';
+import NoticiaCard from './components/tarjetanoticias';
 
-export default function HomePage() {
-  const [noticias, setNoticias] = useState([]);
+import { Container, Row, Col, Spinner, Alert, Button } from 'react-bootstrap';
+import Link from 'next/link';
 
-  useEffect(() => {
-    const fetchNoticias = async () => {
-      try {
-        const res = await axios.get('/api/noticias');
-        setNoticias(res.data);
-      } catch (err) {
-        console.error('Error al obtener noticias:', err);
-      }
-    };
-
-    fetchNoticias();
-  }, []);
-
-  if (noticias.length === 0) {
-    return <p className="text-center mt-5">Cargando noticias...</p>;
+async function getNoticias() {
+  try {
+    const res = await fetch('http://localhost:3000/');
+    if (!res.ok) throw new Error('Error al cargar noticias');
+    return await res.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return [];
   }
+}
 
-  const noticiaPrincipal = noticias[0];
-  const otrasNoticias = noticias.slice(1);
-  
+export default async function NoticiasPage() {
+  const noticias = await getNoticias();
 
   return (
-    <div>
-      <Navbar />
-      <main className="container mt-5">
-        <section className="row mb-4">
-          <div className="col-md-8">
-            <h1 className="display-4">{noticiaPrincipal.titular}</h1>
-            <p>{noticiaPrincipal.descipcion}</p>
-          </div>
-          <div className="col-md-4">
-            <img
-              src={noticiaPrincipal.imagen}
-              className="img-fluid rounded"
-              alt="Noticia principal"
-            />
-          </div>
-        </section>
+    <Container className="py-5">
+      <Row className="mb-4">
+        <Col>
+          <h1 className="display-4 text-center">Últimas Noticias</h1>
+          <p className="text-center text-muted">Mantente informado con lo último</p>
+        </Col>
+      </Row>
 
-        <section className="row">
-          {otrasNoticias.map((noticia) => (
-            <div key={noticia._id} className="col-md-4 mb-4">
-              <NoticiaCard noticia={noticia} />
-            </div>
-          ))}
-        </section>
-      </main>
-      <Footer />
-    </div>
+      <Row className="mb-4">
+        <Col className="text-end">
+          <Link href="/noticias/nueva">
+            <Button variant="success">Crear Nueva Noticia</Button>
+          </Link>
+        </Col>
+      </Row>
+
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {noticias.map((noticia) => (
+          <Col key={noticia._id}>
+            <NoticiaCard noticia={noticia} />
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
 }

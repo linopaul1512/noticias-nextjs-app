@@ -1,28 +1,29 @@
-'use client';
 import Link from 'next/link';
+import { Card, Badge } from 'react-bootstrap';
 
-export default function TarjetaNoticias({ noticia }) {
+export default function NoticiaCard({ noticia }) {
   return (
-    <div className="border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow h-full flex flex-col">
+    <Card className="h-100 shadow-sm noticia-card">
       {noticia.imagen && (
-        <img 
+        <Card.Img 
+          variant="top" 
           src={noticia.imagen} 
-          alt={noticia.titular} 
-          className="w-full h-48 object-cover"
+          alt={noticia.titular}
+          style={{ height: '200px', objectFit: 'cover' }}
         />
       )}
-      <div className="p-4 flex-grow flex flex-col">
-        <h3 className="font-bold text-lg mb-2">{noticia.titular}</h3>
-        <p className="text-gray-600 mb-4 line-clamp-2 flex-grow">{noticia.descripcion}</p>
-        <div className="mt-auto">
-          <Link 
-            href={`/noticia/${noticia._id}`}
-            className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-          >
-            Leer más
-          </Link>
-        </div>
-      </div>
-    </div>
+      <Card.Body>
+        <Badge bg="secondary" className="mb-2 categoria-badge">
+          {noticia.categoría}
+        </Badge>
+        <Card.Title>{noticia.titular}</Card.Title>
+        <Card.Text className="text-truncate">{noticia.descripcion}</Card.Text>
+      </Card.Body>
+      <Card.Footer className="bg-white">
+        <Link href={`/noticias/${noticia._id}`} passHref>
+          <button className="btn btn-outline-primary">Leer más</button>
+        </Link>
+      </Card.Footer>
+    </Card>
   );
 }
