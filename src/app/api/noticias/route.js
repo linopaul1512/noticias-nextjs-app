@@ -7,17 +7,19 @@ export async function POST(request) {
   await connectDB();
   
   try {
+    
+    /*
     // Verificación de token y rol
     const token = request.headers.get('authorization')?.split(' ')[1];
     if (!token) {
       return NextResponse.json({ error: 'Token no proporcionado' }, { status: 401 });
-    }
-
+    }*/
+    /*
     //verificar si eres autor
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (decoded.tipo !== 'autor') {
       return NextResponse.json({ error: 'Solo autores pueden crear noticias' }, { status: 403 });
-    }
+    }*/
 
     //campos no pueden estar vacíos
     const { titular, descripcion, cuerpo, categoría, imagen } = await request.json();
@@ -32,7 +34,6 @@ export async function POST(request) {
       cuerpo,
       categoría,
       imagen: imagen || null,
-      iduser: decoded.userId
     });
 
     await nuevaNoticia.save();

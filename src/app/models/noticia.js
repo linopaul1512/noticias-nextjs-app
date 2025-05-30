@@ -6,7 +6,6 @@ const noticiaSchema = new mongoose.Schema({
   descripcion: { type: String, required: true }, 
   cuerpo: { type: String, required: true },
   categoria: { type: String, required: true },
-  iduser: { type: mongoose.Schema.Types.ObjectId, ref: 'Noticia', required: true },
   imagen: { type: String },
 });
 

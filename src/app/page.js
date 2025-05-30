@@ -30,7 +30,7 @@ export default function NoticiasPage() {
 
         <Row className="mb-4">
           <Col className="text-end">
-            <Link href="/noticias/nueva">
+            <Link href="/noticias">
               <Button variant="success">Crear Nueva Noticia</Button>
             </Link>
           </Col>

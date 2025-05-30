@@ -29,14 +29,14 @@ export default function NuevaNoticiaPage() {
     setSuccess('');
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('Debes iniciar sesión');
+      //const token = localStorage.getItem('token');
+      //if (!token) throw new Error('Debes iniciar sesión');
 
       const response = await fetch('/api/noticias', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+         // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });
