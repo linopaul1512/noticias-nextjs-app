@@ -11,9 +11,9 @@ async function getNoticia(id) {
   }
 }
 
+
 export default async function Page({ params }) {
   const { id } = params;
   const noticia = await getNoticia(id);
-
   return <DetalleNoticia noticia={noticia} />;
 }

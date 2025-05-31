@@ -2,11 +2,12 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/app/libs/mongoDB';
 import Noticia from '@/app/models/noticia';
 
-export async function GET(request, { params }) {
+
+export async function GET(_req, context) {
   try {
     await connectDB();
 
-   const { id } = params
+    const { id } = context.params;
 
     const noticia = await Noticia.findById(id);
     if (!noticia) {
