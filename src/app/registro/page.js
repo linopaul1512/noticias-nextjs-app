@@ -26,7 +26,7 @@ export default function Registro() {
 
     const formData = {
       ...form,
-      rol: "lector", // Campo fijo
+      role: "lector", // Campo fijo
     };
 
     try {

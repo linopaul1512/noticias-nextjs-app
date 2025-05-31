@@ -23,38 +23,35 @@ export default function NuevaNoticiaPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess('');
+  e.preventDefault();
+  setLoading(true);
+  setError('');
+  setSuccess('');
 
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('Debes iniciar sesión');
+  try {
+    const response = await fetch('/api/noticias', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(formData),
+    });
 
-      const response = await fetch('/api/noticias', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(formData)
-      });
+    const data = await response.json();
 
-      const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Error al crear noticia');
 
-      if (!response.ok) throw new Error(data.error || 'Error al crear noticia');
-
-      setSuccess('Noticia creada exitosamente');
-      setTimeout(() => {
-        router.push(`/noticias/${data.noticia.id}`);
-      }, 1500);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setSuccess('Noticia creada exitosamente');
+    setTimeout(() => {
+      router.push(`/noticias/${data.noticia.id}`);
+    }, 1500);
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Container className="py-5">

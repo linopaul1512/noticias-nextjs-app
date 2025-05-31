@@ -31,12 +31,19 @@ export async function POST(request) {
     // Verificar token
     const datos = jwt.verify(token, process.env.JWT_SECRET);
     console.log(datos, "datos")
-    
+
     const response = NextResponse.json({ message: 'Inicio de sesión exitoso' },{ status: 200 });
 
     //mandamos las cookies al nevagador
-    response.cookies.set('sessionToken', token, {httpOnly: true, path: '/', maxAge: 60 * 60});
-    
+    response.cookies.set('sessionToken', token, {
+      httpOnly: false,
+      secure: false,   
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60, // 1 hora
+    });
+
+   
 
     return response;
   } catch (error) {
