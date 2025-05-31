@@ -13,3 +13,5 @@ const noticiaSchema = new mongoose.Schema({
 const Noticia = mongoose.models.Noticia || mongoose.model('Noticia', noticiaSchema);
 
 export default Noticia;
+
+

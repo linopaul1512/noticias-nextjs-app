@@ -15,5 +15,28 @@ async function getNoticia(id) {
 export default async function Page({ params }) {
   const { id } = params;
   const noticia = await getNoticia(id);
-  return <DetalleNoticia noticia={noticia} />;
+  const comentarios = await getComentarios(id);
+
+  return (
+    <DetalleNoticia 
+      noticia={noticia} 
+      noticiaId={id} 
+      comentarios={comentarios} 
+    />
+  );
 }
+
+
+
+async function getComentarios(noticiaId) {
+  try {
+    const res = await fetch(`http://localhost:3000/api/comentarios?noticiaId=${noticiaId}`);
+    if (!res.ok) throw new Error('Error al obtener comentarios');
+    return await res.json();
+  } catch (error) {
+    console.error('Comentarios error:', error);
+    return [];
+  }
+}
+
+

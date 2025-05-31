@@ -7,7 +7,6 @@ export async function POST(request) {
   try {
     await connectDB();
 
-    // Leer token (cookie) y verificar rol, etc…
     const token = request.cookies.get('sessionToken')?.value;
     if (!token) {
       return NextResponse.json({ error: 'Token no proporcionado' }, { status: 401 });
@@ -26,17 +25,10 @@ export async function POST(request) {
     });
 
     const noticiaGuardada = await nuevaNoticia.save();
-
     return NextResponse.json(
-    { 
-      message: 'Noticia creada',
-      noticia: {
-        ...noticiaGuardada.toObject(), // convierte a objeto plano
-        id: noticiaGuardada._id, // agrega el id manualmente
-      },
-    },
-    { status: 201 }
-  );
+      { message: 'Noticia creada', noticia: noticiaGuardada },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Error al crear noticia:', error);
     return NextResponse.json(

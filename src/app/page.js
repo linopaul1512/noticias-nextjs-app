@@ -2,7 +2,6 @@
 import Navbar from './components/navbar';
 import Footer from './components/footer';
 import NoticiaCard from './components/tarjetanoticias';
-
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
