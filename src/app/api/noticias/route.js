@@ -32,7 +32,7 @@ export async function POST(request) {
       titular,
       descripcion,
       cuerpo,
-      categoría,
+      categoria,
       imagen: imagen || null,
       iduser
     });

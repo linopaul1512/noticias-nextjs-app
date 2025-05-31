@@ -19,8 +19,15 @@ const comentarioSchema = new mongoose.Schema(
     },
     fecha: { 
       type: Date, 
-      default: Date.now }
+      default: Date.now 
+    },
+    nombreUsuario: { type: String, 
+    required: true },
 
   },
   { timestamps: true }
 );
+
+const Comentario = mongoose.models.Comentario || mongoose.model('Comentario', comentarioSchema);
+
+export default Comentario;

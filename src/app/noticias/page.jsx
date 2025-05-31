@@ -11,13 +11,7 @@ export default function NuevaNoticiaPage() {
     cuerpo: '',
     categoria: '',
     imagen: ''
-
   });
-
-
-
-
-
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -115,7 +109,7 @@ export default function NuevaNoticiaPage() {
   <Form.Group className="mb-3">
     <Form.Label>Categoría *</Form.Label>
     <Form.Select
-      name="categoría"
+      name="categoria"
       value={formData.categoria}
       onChange={handleChange}
       required

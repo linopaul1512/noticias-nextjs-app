@@ -31,7 +31,7 @@ export async function POST(request) {
 
     const response = NextResponse.json({ message: 'Inicio de sesión exitoso' },{ status: 200 });
 
-      //mandamos las cookies al nevagador
+    //mandamos las cookies al nevagador
     response.cookies.set('sessionToken', token, {httpOnly: true, path: '/', maxAge: 60 * 60});
     
 
