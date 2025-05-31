@@ -3,7 +3,7 @@ import connectDB from "@/app/libs/mongoDB";
 import Usuario from "@/app/models/usuario";
 import bcrypt from "bcryptjs";
 
-
+//si
 export async function POST(request) {
   try {
     await connectDB ();
