@@ -13,7 +13,7 @@ async function getNoticia(id) {
 }
 
 export default async function DetalleNoticia({ params }) {
-  const { id } = await params; 
+  const { id } = params;
   const noticia = await getNoticia(id);
 
   if (!noticia) {
@@ -47,7 +47,7 @@ export default async function DetalleNoticia({ params }) {
 
         <Card.Body>
           <Badge bg="info" className="mb-3">
-            {noticia.categoria}
+            {noticia.categoría || noticia.categoria}
           </Badge>
           <h1 className="display-5 mb-3">{noticia.titular}</h1>
           <p className="text-muted mb-4">{noticia.descripcion}</p>
@@ -58,7 +58,8 @@ export default async function DetalleNoticia({ params }) {
         </Card.Body>
 
         <Card.Footer className="text-muted bg-white">
-          Publicado el {new Date(noticia.fecha).toLocaleDateString()}
+          Publicado el{' '}
+          {new Date(noticia.createdAt || noticia.fecha).toLocaleDateString()}
         </Card.Footer>
       </Card>
     </Container>
