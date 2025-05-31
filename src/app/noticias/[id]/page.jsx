@@ -1,4 +1,4 @@
-import { Container, Card, Badge, Button, Spinner, Alert } from 'react-bootstrap';
+import { Container, Card, Badge, Button, Alert } from 'react-bootstrap';
 import Link from 'next/link';
 
 async function getNoticia(id) {
@@ -7,13 +7,14 @@ async function getNoticia(id) {
     if (!res.ok) throw new Error('Noticia no encontrada');
     return await res.json();
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error('Fetch error:', error);
     return null;
   }
 }
 
 export default async function DetalleNoticia({ params }) {
-  const noticia = await getNoticia(params.id);
+  const { id } = await params; 
+  const noticia = await getNoticia(id);
 
   if (!noticia) {
     return (
@@ -36,26 +37,28 @@ export default async function DetalleNoticia({ params }) {
 
       <Card className="border-0 shadow">
         {noticia.imagen && (
-          <Card.Img 
-            variant="top" 
-            src={noticia.imagen} 
+          <Card.Img
+            variant="top"
+            src={noticia.imagen}
             alt={noticia.titular}
             style={{ maxHeight: '500px', objectFit: 'cover' }}
           />
         )}
-        
+
         <Card.Body>
-          <Badge bg="info" className="mb-3">{noticia.categoría}</Badge>
+          <Badge bg="info" className="mb-3">
+            {noticia.categoria}
+          </Badge>
           <h1 className="display-5 mb-3">{noticia.titular}</h1>
           <p className="text-muted mb-4">{noticia.descripcion}</p>
-          
+
           <div className="fs-5" style={{ whiteSpace: 'pre-line' }}>
             {noticia.cuerpo}
           </div>
         </Card.Body>
-        
+
         <Card.Footer className="text-muted bg-white">
-          Publicado el {new Date(noticia.createdAt).toLocaleDateString()}
+          Publicado el {new Date(noticia.fecha).toLocaleDateString()}
         </Card.Footer>
       </Card>
     </Container>
