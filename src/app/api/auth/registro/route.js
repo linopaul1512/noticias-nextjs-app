@@ -31,7 +31,7 @@ export async function POST(request) {
     const nuevoUsuario = new Usuario({
       ...data,
       contrasena: hashedPassword,
-      tipo:"lector"
+      role:"lector"
     });
 
     await nuevoUsuario.save();
@@ -54,7 +54,7 @@ Esto es lo que devuleve en postman
     "nombre": "Lino",
     "apellido": "Benavides",
     "nombreusuario": "linopaul",
-    "tipo": "autor",
+    "role": "autor",
     "correo": "linobnavidesgabaldon@gmail.com",
     "telefono": "04121175910",
     "_id": "68352937775e694027454b07",

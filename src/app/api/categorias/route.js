@@ -25,7 +25,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
   }
 
-  if (session.user.Tipo !== 'autor') {
+  if (session.user.role !== 'autor') {
     return NextResponse.json({ error: 'No autorizado. Solo los autores pueden crear categorias.' }, { status: 403 });
   }
 

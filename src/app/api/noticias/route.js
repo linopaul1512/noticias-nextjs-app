@@ -17,7 +17,7 @@ export async function POST(request) {
     
     //verificar si eres autor
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (decoded.tipo !== 'autor') {
+    if (decoded.role !== 'autor') {
       return NextResponse.json({ error: 'Solo autores pueden crear noticias' }, { status: 403 });
     }
 

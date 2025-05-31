@@ -27,7 +27,7 @@ export async function POST(request) {
     }
 
     //declaramos token de una hora de duracion
-    const token = jwt.sign({id: usuario._id, tipo: usuario.tipo, nombre: usuario.nombre}, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({id: usuario._id, role: usuario.role, nombre: usuario.nombre}, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     const response = NextResponse.json({ message: 'Inicio de sesión exitoso' },{ status: 200 });
 

@@ -17,7 +17,7 @@ export default function Registro() {
       correo: e.target.correo.value,
       telefono: e.target.telefono.value,
       contrasena: e.target.contrasena.value,
-      tipo: "lector", // Campo fijo
+      rol: "lector", // Campo fijo
     };
 
     try {
