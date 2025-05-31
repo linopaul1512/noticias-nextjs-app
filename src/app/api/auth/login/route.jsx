@@ -28,7 +28,10 @@ export async function POST(request) {
 
     //declaramos token de una hora de duracion
     const token = jwt.sign({id: usuario._id, role: usuario.role, nombre: usuario.nombre}, process.env.JWT_SECRET, { expiresIn: '1h' });
-
+    // Verificar token
+    const datos = jwt.verify(token, process.env.JWT_SECRET);
+    console.log(datos, "datos")
+    
     const response = NextResponse.json({ message: 'Inicio de sesión exitoso' },{ status: 200 });
 
     //mandamos las cookies al nevagador

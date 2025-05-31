@@ -1,22 +1,31 @@
 "use client";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Form, Button, Container, Alert } from "react-bootstrap";
 
 export default function Registro() {
   const [error, setError] = useState("");
   const router = useRouter();
+  const [form, setForm] = useState({
+    nombre: "",
+    apellido: "",
+    nombreusuario: "",
+    correo: "",
+    telefono: "",
+    contrasena: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     const formData = {
-      nombre: e.target.nombre.value,
-      apellido: e.target.apellido.value,
-      nombreusuario: e.target.nombreusuario.value,
-      correo: e.target.correo.value,
-      telefono: e.target.telefono.value,
-      contrasena: e.target.contrasena.value,
+      ...form,
       rol: "lector", // Campo fijo
     };
 
@@ -39,30 +48,45 @@ export default function Registro() {
   };
 
   return (
-    <div>
-      <h1>Registro</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required />
+    <Container className="mt-4" style={{ maxWidth: "500px" }}>
+      <h2 className="mb-3">Registro de Lector</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
 
-        <label htmlFor="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" required />
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-2">
+          <Form.Label>Nombre</Form.Label>
+          <Form.Control name="nombre" onChange={handleChange} required />
+        </Form.Group>
 
-        <label htmlFor="nombreusuario">Nombre de usuario:</label>
-        <input type="text" id="nombreusuario" name="nombreusuario" required />
+        <Form.Group className="mb-2">
+          <Form.Label>Apellido</Form.Label>
+          <Form.Control name="apellido" onChange={handleChange} required />
+        </Form.Group>
 
-        <label htmlFor="correo">Correo:</label>
-        <input type="email" id="correo" name="correo" required />
+        <Form.Group className="mb-2">
+          <Form.Label>Nombre de Usuario</Form.Label>
+          <Form.Control name="nombreusuario" onChange={handleChange} required />
+        </Form.Group>
 
-        <label htmlFor="telefono">Teléfono:</label>
-        <input type="text" id="telefono" name="telefono" required />
+        <Form.Group className="mb-2">
+          <Form.Label>Correo</Form.Label>
+          <Form.Control type="email" name="correo" onChange={handleChange} required />
+        </Form.Group>
 
-        <label htmlFor="contrasena">Contraseña:</label>
-        <input type="password" id="contrasena" name="contrasena" required minLength="6" />
+        <Form.Group className="mb-2">
+          <Form.Label>Teléfono</Form.Label>
+          <Form.Control name="telefono" onChange={handleChange} required />
+        </Form.Group>
 
-        <button type="submit">Registrarse</button>
-      </form>
-    </div>
+        <Form.Group className="mb-2">
+          <Form.Label>Contraseña</Form.Label>
+          <Form.Control type="password" name="contrasena" onChange={handleChange} required minLength={6} />
+        </Form.Group>
+
+        <Button type="submit" className="mt-2" variant="primary" block="true">
+          Registrarse
+        </Button>
+      </Form>
+    </Container>
   );
 }
