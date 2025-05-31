@@ -26,14 +26,14 @@ export async function POST(request) {
     });
 
     const noticiaGuardada = await nuevaNoticia.save();
-    
+
     return NextResponse.json(
     { 
       message: 'Noticia creada',
       noticia: {
         ...noticiaGuardada.toObject(), // convierte a objeto plano
-        id: noticiaGuardada._id.toString(), // agrega el id manualmente
-      }
+        id: noticiaGuardada._id, // agrega el id manualmente
+      },
     },
     { status: 201 }
   );
