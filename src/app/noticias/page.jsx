@@ -43,8 +43,13 @@ export default function NuevaNoticiaPage() {
     if (!response.ok) throw new Error(data.error || 'Error al crear noticia');
 
     setSuccess('Noticia creada exitosamente');
+
     setTimeout(() => {
-      router.push(`/noticias/${data.noticia.id}`);
+      if (data?.noticia?.id) {
+        router.push(`/noticias/${data.noticia.id}`);
+      } else {
+        setError('No se pudo obtener el ID de la noticia creada');
+      }
     }, 1500);
   } catch (err) {
     setError(err.message);

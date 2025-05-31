@@ -13,8 +13,9 @@ async function getNoticia(id) {
 }
 
 export default async function DetalleNoticia({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const noticia = await getNoticia(id);
+
 
   if (!noticia) {
     return (

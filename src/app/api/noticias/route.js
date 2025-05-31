@@ -26,10 +26,17 @@ export async function POST(request) {
     });
 
     const noticiaGuardada = await nuevaNoticia.save();
+    
     return NextResponse.json(
-      { message: 'Noticia creada', noticia: noticiaGuardada },
-      { status: 201 }
-    );
+    { 
+      message: 'Noticia creada',
+      noticia: {
+        ...noticiaGuardada.toObject(), // convierte a objeto plano
+        id: noticiaGuardada._id.toString(), // agrega el id manualmente
+      }
+    },
+    { status: 201 }
+  );
   } catch (error) {
     console.error('Error al crear noticia:', error);
     return NextResponse.json(
