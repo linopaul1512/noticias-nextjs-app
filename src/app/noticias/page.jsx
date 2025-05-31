@@ -9,9 +9,15 @@ export default function NuevaNoticiaPage() {
     titular: '',
     descripcion: '',
     cuerpo: '',
-    categoría: '',
+    categoria: '',
     imagen: ''
+
   });
+
+
+
+
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,14 +35,14 @@ export default function NuevaNoticiaPage() {
     setSuccess('');
 
     try {
-      //const token = localStorage.getItem('token');
-      //if (!token) throw new Error('Debes iniciar sesión');
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('Debes iniciar sesión');
 
       const response = await fetch('/api/noticias', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-         // 'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });
@@ -110,7 +116,7 @@ export default function NuevaNoticiaPage() {
     <Form.Label>Categoría *</Form.Label>
     <Form.Select
       name="categoría"
-      value={formData.categoría}
+      value={formData.categoria}
       onChange={handleChange}
       required
     >
